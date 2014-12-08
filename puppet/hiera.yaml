@@ -1,0 +1,10 @@
+# Puppet Hiera Data
+:yaml:
+  :datadir: /vagrant
+:hierarchy:
+  - "puppet/%{environment}"
+  - puppet/global
+  - puppet/hiera
+  - vagrant-nsidc
+
+classes: []

@@ -1,0 +1,16 @@
+project: puppet-nunaliit
+vsphere:
+  template: trusty64-nsidc
+virtualbox:
+  box: trusty64-nsidc
+  box_url: http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/vagrant/boxes/trusty64-nsidc.box
+
+puppet:
+  enabled: true
+  execution_dir: /vagrant
+  apply:
+    options: --debug --verbose --modulepath=/vagrant/puppet/modules:/vagrant-nsidc-puppet --hiera_config=/vagrant/puppet/hiera.yaml
+    manifest: /vagrant/puppet/site.pp
+  librarian:
+    puppetfile: puppet/Puppetfile
+
