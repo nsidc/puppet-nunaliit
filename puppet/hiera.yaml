@@ -3,7 +3,7 @@
   :datadir: /vagrant
 :hierarchy:
   - "puppet/%{environment}"
-  - puppet/global
+  - puppet/nunaliit-common
   - puppet/hiera
   - vagrant-nsidc
 

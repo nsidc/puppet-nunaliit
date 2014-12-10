@@ -1,0 +1,18 @@
+[
+	{
+		"label":"title"
+		,"select":"demo_doc.title"
+	}
+	,{
+		"label":"description"
+		,"select":"demo_doc.description"
+	}
+	,{
+		"label":"date"
+		,"select":"demo_doc.date"
+	}
+	,{
+		"label":"reference"
+		,"select":"demo_doc.reference.doc"
+	}
+]

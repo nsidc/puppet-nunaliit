@@ -1,0 +1,9 @@
+# nunaliit magic
+4       string          ftyp            ISO Media
+>8      string          MSNV            \b, MPEG v4 system, version 2
+!:mime  video/mp4
+
+#MP3 with ID3 tag
+0       string      ID3     audio/mpeg
+!:mime  audio/mpeg
+

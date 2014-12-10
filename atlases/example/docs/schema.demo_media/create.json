@@ -1,0 +1,12 @@
+{
+	"nunaliit_schema": "demo_media"
+	,"nunaliit_attachments": {
+		"nunaliit_type": "attachment_descriptions"
+		,"files": {
+			"media": {
+				"data": {}
+			}
+		}
+	}
+	,"demo_media": {}
+}
