@@ -1,0 +1,39 @@
+<div class="n2_documentForm"><div class="n2_layoutFloat">
+	{{#demo_doc}}
+		<div>
+			<div class="label n2s_localize">Title</div>
+			<div class="value">{{#:field}}title{{/:field}}</div>
+			<div class="end"></div>
+		</div>
+		<div>
+			<div class="label n2s_localize">Description</div>
+			<div class="value">{{#:field}}description,textarea{{/:field}}</div>
+			<div class="end"></div>
+		</div>
+		<div>
+			<div class="label n2s_localize">Date</div>
+			<div class="value">{{#:field}}date,date{{/:field}}</div>
+			<div class="end"></div>
+		</div>
+		<div>
+			<div class="label n2s_localize">Reference</div>
+			<div class="value">{{#:field}}reference,reference{{/:field}}</div>
+			<div class="end"></div>
+		</div>
+	{{/demo_doc}}
+
+	<div>
+		<div class="label n2s_localize">Layers</div>
+		<div class="value">{{#:field}}nunaliit_layers,layers{{/:field}}</div>
+		<div class="end"></div>
+	</div>
+
+	{{#nunaliit_geom}}{{{:html}}}{{/nunaliit_geom}}
+
+	<div>
+		<div class="label n2s_localize">Hover Sound</div>
+		<div class="value">{{#:field}}nunaliit_hoverSound,reference{{/:field}}</div>
+		<div class="end"></div>
+	</div>
+	
+</div></div>
