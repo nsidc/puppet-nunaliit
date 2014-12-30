@@ -16,7 +16,7 @@ define nunaliit::atlas (
   # Nunaliit command
   $nunaliit_command = "/opt/nunaliit2-couch-sdk-${nunaliit_version}/bin/nunaliit"
 
-  # We ask for the parent directory because the atlas directory needs to follow a convention
+  # Parent directory requested because atlas directory must be named consistently
   $atlas_directory = "${atlas_parent_directory}/${title}"
 
   # Setup the atlas init script
@@ -98,7 +98,7 @@ define nunaliit::atlas (
   }
 
   # Change the atlas port, then restart the service
-  unless $config == undef {
+  unless $port == undef {
     file_line { "atlas-port-$title":
       path => "${atlas_directory}/config/install.properties",
       line => "servlet.url.port=${port}",
