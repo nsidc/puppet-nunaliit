@@ -20,4 +20,5 @@ nunaliit::atlases:
     docs: /vagrant/atlases/example/docs
     htdocs: /vagrant/atlases/example/htdocs
     config: /vagrant/atlases/example/config
-    port: 8082
+    port: 8080
+
