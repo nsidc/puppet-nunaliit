@@ -15,10 +15,6 @@ nunaliit::atlases:
   example:
     create: true
     nunaliit_version: 2.2.3
-    atlas_parent_directory: /tmp
-    docs: /vagrant/atlases/example/docs
-    htdocs: /vagrant/atlases/example/htdocs
-    config: /vagrant/atlases/example/config
 ```
 
 ## Defined Types & Classes
@@ -42,16 +38,4 @@ The version of nunaliit required by this atlas
 
 ### `atlas_parent_directory`
 The parent directory for the atlas directory. The atlas directory itself is always named after the atlas.
-
-### `docs`
-A directory on the VM to sync into the atlas docs folder. 
-This will erase the contents of the docs folder and run "nunaliit update" afterward.
-
-### `htdocs`
-A directory on the VM to sync into the atlas htdocs folder. 
-This will erase the contents of the htdocs folder and run "nunaliit update" afterward.
-
-### `config`
-A directory on the VM to sync into the atlas config folder. 
-Files of the same name are overwritten, but any other existing files are left unmodified.
 
