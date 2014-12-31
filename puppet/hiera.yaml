@@ -6,5 +6,6 @@
   - puppet/nunaliit-common
   - puppet/hiera
   - vagrant-nsidc
+:merge_behavior: deeper
 
 classes: []

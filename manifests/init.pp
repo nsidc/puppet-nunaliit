@@ -56,11 +56,11 @@ class nunaliit (
   }
 
   # Find any nunaliit installations defined in hiera data and add them to the manifest
-  $nunaliit_installs = hiera('nunaliit::installs', {})
+  $nunaliit_installs = hiera_hash('nunaliit::installs', {})
   create_resources('nunaliit::install', $nunaliit_installs)
 
   # Find any nunaliit atlases defined in hiera data and add them to the manifest
-  $nunaliit_atlases = hiera('nunaliit::atlases', {})
+  $nunaliit_atlases = hiera_hash('nunaliit::atlases', {})
   create_resources('nunaliit::atlas', $nunaliit_atlases)
 
 }
