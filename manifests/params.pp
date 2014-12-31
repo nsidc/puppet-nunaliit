@@ -12,9 +12,13 @@ class nunaliit::params
   }
 
   # Nunaliit class defaults
-  $nunaliit_version = '2.2.3'
   $nunaliit_user = 'vagrant'
+  $nunaliit_default_version = '2.2.3'
+  $nunaliit_default_port = '8080'
+  $atlas_parent_directory = '/tmp'
+  $atlas_source_parent_directory = '/vagrant/atlases'
   $couchdb_password = 'Silalirijiit'
+  $couchdb_data_directory = '/tmp/couchdb'
 
 }
 

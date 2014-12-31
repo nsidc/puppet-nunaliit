@@ -2,9 +2,9 @@
 # This class is only intended to be used from within the nunaliit::atlas
 
 define nunaliit::atlas::create (
-  $atlas_directory = undef,
+  $atlas_directory = "${nunaliit::params::atlas_parent_directory}/${title}",
   $nunaliit_user = $nunaliit::params::nunaliit_user,
-  $nunaliit_version = nunaliit::params::nunaliit_version,
+  $nunaliit_version = nunaliit::params::nunaliit_default_version,
   $couchdb_password = hiera('nunaliit::couchdb_password', $nunaliit::params::couchdb_password)
 ) {
   include ::nunaliit::params

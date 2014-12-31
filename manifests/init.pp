@@ -2,8 +2,18 @@
 # See https://github.com/GCRC/nunaliit/wiki/Prerequisite-install-on-Ubuntu-14.04-LTS
 
 class nunaliit (
-  $couchdb_password = $nunaliit::params::couchdb_password
+  $couchdb_password = $nunaliit::params::couchdb_password,
+  $couchdb_data_directory = $nunaliit::params::couchdb_data_directory,
+  $couchdb_log_file = "${nunaliit::params::couchdb_data_directory}/couch.log",
+  $atlas_parent_directory = $nunaliit::params::atlas_parent_directory,
+  $atlas_source_parent_directory = $nunaliit::params::atlas_source_parent_directory,
 ) inherits nunaliit::params {
+
+  # puppet dependency for deep_merging create_resources (only works on the second try)
+  package { 'deep_merge':
+    ensure   => 'installed',
+    provider => 'gem',
+  }
 
   # Install nunaliit dependencies
   package{ "couchdb": }
@@ -37,6 +47,29 @@ class nunaliit (
     match  => ';?admin = [a-zA-Z]+',
     require => Package['couchdb'],
     notify => Service['couchdb']
+  }
+
+  # Setup the CouchDB server log file
+  file_line { 'couchdb_logfile':
+    path  => '/etc/couchdb/local.ini',
+    line  => "file = ${couchdb_log_file}",
+    after  => '\[log\]',
+    require => [ Package['couchdb'], File[$couchdb_data_directory] ],
+    notify => Service['couchdb']
+  }
+
+  # Setup the CouchDB database directory
+  file { "${couchdb_data_directory}":
+     ensure => 'directory',
+     require => Package['couchdb'],
+     owner => 'couchdb',
+  }
+  file { '/var/lib/couchdb':
+     ensure => 'link',
+     target => $couchdb_data_directory,
+     force => true,
+     require => File[$couchdb_data_directory],
+     notify  => Service['couchdb'],
   }
 
   # Configure mime types in /etc/magic

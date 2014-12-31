@@ -4,19 +4,19 @@
 define nunaliit::atlas (
   $create = false,
   $nunaliit_user = $nunaliit::params::nunaliit_user,
-  $nunaliit_version = $nunaliit::params::nunaliit_version,
-  $atlas_parent_directory = undef,
-  $docs = undef,
-  $htdocs = undef,
-  $config = undef,
-  $port = undef,
+  $nunaliit_version = $nunaliit::params::nunaliit_default_version,
+  $port = $nunaliit::params::nunaliit_default_port,
+  $atlas_parent_directory = $nunaliit::params::atlas_parent_directory,
+  $htdocs = true,
+  $docs = true,
+  $config = true,
 ) {
   include ::nunaliit::params
 
   # Nunaliit command
   $nunaliit_command = "/opt/nunaliit2-couch-sdk-${nunaliit_version}/bin/nunaliit"
 
-  # Parent directory requested because atlas directory must be named consistently
+  # atlas directory must be named consistently
   $atlas_directory = "${atlas_parent_directory}/${title}"
 
   # Setup the atlas init script
@@ -76,7 +76,7 @@ define nunaliit::atlas (
       recurse => true,
       purge   => true,
       force   => true,
-      source  => $docs,
+      source  => "${nunaliit::params::atlas_source_parent_directory}/${title}/docs",
       require => Service[$title],
       notify  => Exec["nunaliit-update-${title}"]
     }
@@ -91,7 +91,7 @@ define nunaliit::atlas (
       recurse => true,
       purge   => true,
       force   => true,
-      source  => $htdocs,
+      source  => "${nunaliit::params::atlas_source_parent_directory}/${title}/htdocs",
       require => Service[$title],
       notify  => Exec["nunaliit-update-${title}"]
     }
@@ -115,7 +115,7 @@ define nunaliit::atlas (
       ensure  => directory,
       owner   => $nunaliiit_user,
       recurse => true,
-      source  => $config,
+      source  => "${nunaliit::params::atlas_source_parent_directory}/${title}/config",
       require => File[$atlas_directory],
       notify  => Service[$title],
     }
