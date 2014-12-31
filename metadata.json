@@ -13,7 +13,6 @@
   ],
   "dependencies": [
     { "name": "puppetlabs/stdlib" },
-    { "name": "nsidc/nsidc_nfs" },
     { "name": "example42/puppi" }
   ]
 }
