@@ -2,11 +2,20 @@
 # Create and/or manage a nunaliit atlas
 
 define nunaliit::atlas (
-  $create = false,
-  $nunaliit_user = $nunaliit::params::nunaliit_user,
-  $nunaliit_version = $nunaliit::params::nunaliit_default_version,
+  $atlas_parent_directory = 
+     hiera('nunaliit::atlas_parent_directory', 
+     $nunaliit::params::atlas_parent_directory),
+  $atlas_source_directory = 
+     hiera('nunaliit::atlas_source_directory', 
+     $nunaliit::params::atlas_source_directory),
+  $nunaliit_user = 
+     hiera('nunaliit::nunaliit_user', 
+     $nunaliit::params::nunaliit_user),
+  $nunaliit_version = 
+     hiera('nunaliit::nunaliit_default_version', 
+     $nunaliit::params::nunaliit_default_version),
   $port = $nunaliit::params::nunaliit_default_port,
-  $atlas_parent_directory = $nunaliit::params::atlas_parent_directory,
+  $create = false,
   $htdocs = true,
   $docs = true,
   $config = true,
@@ -69,14 +78,14 @@ define nunaliit::atlas (
 
   # Sync the docs folder removing any other existing files
   # then run nunaliit update
-  unless $docs == undef {
+  if $docs {
     file{ "${atlas_directory}/docs":
       ensure  => directory,
       owner   => $nunaliiit_user,
       recurse => true,
       purge   => true,
       force   => true,
-      source  => "${nunaliit::params::atlas_source_parent_directory}/${title}/docs",
+      source  => "${atlas_source_directory}/${title}/docs",
       require => Service[$title],
       notify  => Exec["nunaliit-update-${title}"]
     }
@@ -84,16 +93,29 @@ define nunaliit::atlas (
 
   # Sync the htdocs folder removing any other existing files
   # then run nunaliit update
-  unless $htdocs == undef {
+  if $htdocs {
     file{ "${atlas_directory}/htdocs":
       ensure  => directory,
       owner   => $nunaliiit_user,
       recurse => true,
       purge   => true,
       force   => true,
-      source  => "${nunaliit::params::atlas_source_parent_directory}/${title}/htdocs",
+      source  => "${atlas_source_directory}/${title}/htdocs",
       require => Service[$title],
       notify  => Exec["nunaliit-update-${title}"]
+    }
+  }
+
+  # Sync the the config folder, but leave any other existing files
+  # then restart the nunaliit service
+  if $config {
+    file{ "${atlas_directory}/config":
+      ensure  => directory,
+      owner   => $nunaliiit_user,
+      recurse => true,
+      source  => "${atlas_source_directory}/${title}/config",
+      require => File[$atlas_directory],
+      notify  => Service[$title],
     }
   }
 
@@ -103,19 +125,6 @@ define nunaliit::atlas (
       path => "${atlas_directory}/config/install.properties",
       line => "servlet.url.port=${port}",
       match => 'servlet\.url\.port=.*',
-      require => File[$atlas_directory],
-      notify  => Service[$title],
-    }
-  }
-
-  # Sync the the config folder, but leave any other existing files
-  # then restart the nunaliit service
-  unless $config == undef {
-    file{ "${atlas_directory}/config":
-      ensure  => directory,
-      owner   => $nunaliiit_user,
-      recurse => true,
-      source  => "${nunaliit::params::atlas_source_parent_directory}/${title}/config",
       require => File[$atlas_directory],
       notify  => Service[$title],
     }

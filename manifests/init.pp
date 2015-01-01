@@ -4,10 +4,11 @@
 class nunaliit (
   $couchdb_password = $nunaliit::params::couchdb_password,
   $couchdb_data_directory = $nunaliit::params::couchdb_data_directory,
-  $couchdb_log_file = "${nunaliit::params::couchdb_data_directory}/couch.log",
   $atlas_parent_directory = $nunaliit::params::atlas_parent_directory,
-  $atlas_source_parent_directory = $nunaliit::params::atlas_source_parent_directory,
+  $atlas_source_directory = $nunaliit::params::atlas_source_directory,
 ) inherits nunaliit::params {
+
+  # $couchdb_log_file = "${couchdb_data_directory}/couch.log"
 
   # puppet dependency for deep_merging create_resources (only works on the second try)
   package { 'deep_merge':
@@ -50,13 +51,13 @@ class nunaliit (
   }
 
   # Setup the CouchDB server log file
-  file_line { 'couchdb_logfile':
-    path  => '/etc/couchdb/local.ini',
-    line  => "file = ${couchdb_log_file}",
-    after  => '\[log\]',
-    require => [ Package['couchdb'], File[$couchdb_data_directory] ],
-    notify => Service['couchdb']
-  }
+  # file_line { 'couchdb_logfile':
+  #   path  => '/etc/couchdb/local.ini',
+  #   line  => "file = ${couchdb_log_file}",
+  #   after  => '\[log\]',
+  #   require => [ Package['couchdb'], File[$couchdb_data_directory] ],
+  #   notify => Service['couchdb']
+  # }
 
   # Setup the CouchDB database directory
   file { "${couchdb_data_directory}":
@@ -69,7 +70,7 @@ class nunaliit (
      target => $couchdb_data_directory,
      force => true,
      require => File[$couchdb_data_directory],
-     notify  => Service['couchdb'],
+     before  => Service['couchdb'],
   }
 
   # Configure mime types in /etc/magic

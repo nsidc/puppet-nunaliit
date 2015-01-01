@@ -2,7 +2,10 @@
 # This class is only intended to be used from within the nunaliit::atlas
 
 define nunaliit::atlas::create (
-  $atlas_directory = "${nunaliit::params::atlas_parent_directory}/${title}",
+  $atlas_parent_directory = 
+    hiera('nunaliit::atlas_parent_directory', 
+    $nunaliit::params::atlas_parent_directory),
+  $atlas_directory = "${atlas_parent_directory}/${title}",
   $nunaliit_user = $nunaliit::params::nunaliit_user,
   $nunaliit_version = nunaliit::params::nunaliit_default_version,
   $couchdb_password = hiera('nunaliit::couchdb_password', $nunaliit::params::couchdb_password)
@@ -11,6 +14,12 @@ define nunaliit::atlas::create (
 
   # Nunaliit command
   $nunaliit_command = "/opt/nunaliit2-couch-sdk-${nunaliit_version}/bin/nunaliit"
+
+  # Atlas parent directory
+  file { $atlas_parent_directory: 
+    ensure   => directory,
+    owner    => $nunaliit_user,
+  }
 
   # Atlas directory
   file { $atlas_directory: 
@@ -23,7 +32,7 @@ define nunaliit::atlas::create (
   # nunaliit create
   exec { "nunaliit-create-${title}":
     command => "${nunaliit_command} --atlas-dir ${atlas_directory} create --no-config",
-    require => Nunaliit::Install[$nunaliit_version],
+    require => [ Nunaliit::Install[$nunaliit_version], File[$atlas_parent_directory] ],
     user    => $nunaliit_user,
     creates => $atlas_directory,
   }
