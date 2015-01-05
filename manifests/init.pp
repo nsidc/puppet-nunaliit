@@ -29,7 +29,7 @@ class nunaliit (
   service { 'couchdb':
     ensure => 'running',
     enable => 'true',
-    require => Package['couchdb']
+    require => [ Package['couchdb'], File_line['couchdb_bind'], File_line['couchdb_admin'], File[$couchdb_data_directory] ]
   }
 
   # Setup the CouchDB server to listen to external requests
@@ -60,9 +60,10 @@ class nunaliit (
   # }
 
   # Setup the CouchDB database directory
-  file { "${couchdb_data_directory}":
+  file { $couchdb_data_directory:
      ensure => 'directory',
      require => Package['couchdb'],
+     notify => Service['couchdb'],
      owner => 'couchdb',
   }
   file { '/var/lib/couchdb':
