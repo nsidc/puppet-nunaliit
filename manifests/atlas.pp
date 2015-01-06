@@ -35,6 +35,14 @@ define nunaliit::atlas (
     require => File[$atlas_directory]
   }
 
+  # Sometimes we need to wait a few seconds before Nunaliit can talk to CouchDB
+  exec { "wait-for-couchdb-${title}":
+    command     => 'sleep 5',
+    path        => '/usr/local/bin:/usr/bin:/bin',
+    refreshonly => true,
+    subscribe   => Service['couchdb'],
+  }
+
   # If we were asked to create the atlas, do that before starting the service
   if $create == true {
 
@@ -50,7 +58,7 @@ define nunaliit::atlas (
       ensure => 'running',
       enable => true,
       status => "/etc/init.d/${title} check",
-      require => [ Service['couchdb'], File["/etc/init.d/${title}"], Nunaliit::Atlas::Create[$title] ],
+      require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/${title}"], Nunaliit::Atlas::Create[$title] ],
     }
 
   # Otherwise, just start the service
@@ -64,7 +72,7 @@ define nunaliit::atlas (
       ensure => 'running',
       enable => true,
       status => "/etc/init.d/${title} check",
-      require => [ Service['couchdb'], File["/etc/init.d/${title}"] ]
+      require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/${title}"] ]
     }
   }
 
