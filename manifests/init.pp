@@ -90,6 +90,28 @@ class nunaliit (
     install_dependencies => false,
   }
 
+  # install and configure nginx
+  package { 'nginx': }
+  file { '/etc/nginx/conf.d/nunaliit.conf':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => 'puppet:///modules/nunaliit/nginx.conf',
+    require => Package['nginx'],
+    notify  => Service['nginx']
+  }
+  file { '/etc/nginx/sites-available/default':
+    ensure  => absent,
+    require => Package['nginx'],
+    notify => Service['nginx']
+  }
+  service { 'nginx':
+    ensure => running,
+    enable => true,
+    require => Package[nginx]
+  }
+
   # Find any nunaliit installations defined in hiera data and add them to the manifest
   $nunaliit_installs = hiera_hash('nunaliit::installs', {})
   create_resources('nunaliit::install', $nunaliit_installs)
