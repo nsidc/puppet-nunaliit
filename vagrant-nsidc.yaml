@@ -1,6 +1,6 @@
 project: puppet-nunaliit
 gitrepo: git@github.com:nsidc/puppet-nunaliit.git
-gitbranch: master
+gitbranch: add-ci
 
 vsphere:
   template: trusty64-nsidc
