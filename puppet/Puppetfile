@@ -8,3 +8,8 @@ mod 'example42/puppi'
 mod 'nsidc/nsidc_jenkins',
   :git => 'git@bitbucket.org:/nsidc/puppet-nsidc-jenkins.git',
   :ref => 'latest'
+
+# Module for installing python and pip.
+# You may want to use this if using python's bumpversion
+# for doing your version bumping.
+mod 'stankevich/python'
