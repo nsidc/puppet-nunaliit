@@ -1,7 +1,3 @@
-# Puppet modules
-classes:
-  - nunaliit
-
 # Nunaliit CouchDB password
 # nunaliit::couchdb_password: Silalirijiit
 
