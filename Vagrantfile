@@ -9,8 +9,14 @@ Vagrant.configure(2) do |config|
   # CouchDB / Futon Port Forwarding
   config.vm.network "forwarded_port", guest: 5984, host: 5984
 
-  # Sync the source of our puppet module into the right place to test it
-  config.vm.synced_folder '.', '/vagrant-nsidc-puppet/nunaliit'
+  # Sync /vagrant (change default behavior to explicitly use rsync )
+  config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+  # Symlink /vagrant into the puppet modules folder so it can be loaded like a module
+  config.vm.provision "shell", inline: "mkdir -p /vagrant-nsidc-puppet; ln -sf /vagrant /vagrant-nsidc-puppet/nunaliit"
+
+  # Apply puppet
+  config.vm.provision :nsidc_puppet
 
 end
 
