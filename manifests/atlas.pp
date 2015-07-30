@@ -21,7 +21,7 @@ define nunaliit::atlas (
   $atlas_directory = "${atlas_parent_directory}/${title}"
 
   # Setup the atlas init script
-  file { "/etc/init.d/${title}":
+  file { "/etc/init.d/nunaliit-${title}":
     ensure  => 'link',
     target  => "${atlas_directory}/extra/nunaliit.sh",
     require => File[$atlas_directory]
@@ -46,11 +46,11 @@ define nunaliit::atlas (
     }
 
     # Setup the Nunaliit service
-    service { $title:
+    service { "nunaliit-${title}":
       ensure  => 'running',
       enable  => true,
-      status  => "/etc/init.d/${title} check",
-      require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/${title}"], Nunaliit::Atlas::Create[$title] ],
+      status  => "/etc/init.d/nunaliit-${title} check",
+      require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/nunaliit-${title}"], Nunaliit::Atlas::Create[$title] ],
     }
 
   # Otherwise, just start the service
@@ -60,11 +60,11 @@ define nunaliit::atlas (
     file { $atlas_directory: }
 
     # Setup the Nunaliit service
-    service { $title:
+    service { "nunaliit-${title}":
       ensure  => 'running',
       enable  => true,
-      status  => "/etc/init.d/${title} check",
-      require => [ Exec["wait-for-couchdb-${title}"], Service[couchdb], File["/etc/init.d/${title}"] ]
+      status  => "/etc/init.d/nunaliit-${title} check",
+      require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/nunaliit-${title}"] ]
     }
   }
 
@@ -73,7 +73,7 @@ define nunaliit::atlas (
     command     => "${nunaliit_command} --atlas-dir ${atlas_directory} update",
     user        => $nunaliit_user,
     refreshonly => true,
-    require     => Service[$title]
+    require     => Service["nunaliit-${title}"]
   }
 
   # Sync the docs folder removing any other existing files
@@ -86,7 +86,7 @@ define nunaliit::atlas (
       purge   => true,
       force   => true,
       source  => "${atlas_source_directory}/${title}/docs",
-      require => Service[$title],
+      require => Service["nunaliit-${title}"],
       notify  => Exec["nunaliit-update-${title}"]
     }
   }
@@ -101,7 +101,7 @@ define nunaliit::atlas (
       purge   => true,
       force   => true,
       source  => "${atlas_source_directory}/${title}/htdocs",
-      require => Service[$title],
+      require => Service["nunaliit-${title}"],
       notify  => Exec["nunaliit-update-${title}"]
     }
   }
@@ -115,7 +115,7 @@ define nunaliit::atlas (
       recurse => true,
       source  => "${atlas_source_directory}/${title}/config",
       require => File[$atlas_directory],
-      notify  => Service[$title],
+      notify  => Service["nunaliit-${title}"],
     }
   }
 
@@ -126,7 +126,7 @@ define nunaliit::atlas (
       line    => "servlet.url.port=${port}",
       match   => 'servlet\.url\.port=.*',
       require => File[$atlas_directory],
-      notify  => Service[$title],
+      notify  => Service["nunaliit-${title}"],
     }
   }
 
