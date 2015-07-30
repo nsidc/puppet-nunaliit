@@ -1,3 +1,6 @@
+# = Defined Type: install
+# Install a version of nunaliit into /opt
+
 define nunaliit::install (
   $nunaliit_version = $title
 ) {

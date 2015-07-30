@@ -2,7 +2,7 @@
 # Create and/or manage a nunaliit atlas
 
 define nunaliit::atlas (
-  $atlas_parent_directory = hiera('nunaliit::atlas_parent_directory',   $nunaliit::params::atlas_parent_directory), 
+  $atlas_parent_directory = hiera('nunaliit::atlas_parent_directory',   $nunaliit::params::atlas_parent_directory),
   $atlas_source_directory = hiera('nunaliit::atlas_source_directory',   $nunaliit::params::atlas_source_directory),
   $nunaliit_user          = hiera('nunaliit::nunaliit_user',            $nunaliit::params::nunaliit_user),
   $nunaliit_version       = hiera('nunaliit::nunaliit_default_version', $nunaliit::params::nunaliit_default_version),
@@ -22,9 +22,9 @@ define nunaliit::atlas (
 
   # Setup the atlas init script
   file { "/etc/init.d/${title}":
-    ensure => 'link',
-    target => "${atlas_directory}/extra/nunaliit.sh",
-    require => "File[${atlas_directory}]"
+    ensure  => 'link',
+    target  => "${atlas_directory}/extra/nunaliit.sh",
+    require => File[$atlas_directory]
   }
 
   # Sometimes we need to wait a few seconds before Nunaliit can talk to CouchDB
