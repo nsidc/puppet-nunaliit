@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'puppet-nunaliit' do
+describe 'nunaliit' do
 
   let(:facts) { { :operatingsystem => 'Ubuntu' } }
 
