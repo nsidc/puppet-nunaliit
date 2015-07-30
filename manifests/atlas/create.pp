@@ -2,8 +2,8 @@
 # This class is only intended to be used from within the nunaliit::atlas
 
 define nunaliit::atlas::create (
-  $atlas_parent_directory = 
-    hiera('nunaliit::atlas_parent_directory', 
+  $atlas_parent_directory =
+    hiera('nunaliit::atlas_parent_directory',
     $nunaliit::params::atlas_parent_directory),
   $atlas_directory = "${atlas_parent_directory}/${title}",
   $nunaliit_user = $nunaliit::params::nunaliit_user,
@@ -16,14 +16,14 @@ define nunaliit::atlas::create (
   $nunaliit_command = "/opt/nunaliit2-couch-sdk-${nunaliit_version}/bin/nunaliit"
 
   # Atlas parent directory
-  file { $atlas_parent_directory: 
-    ensure   => directory,
-    owner    => $nunaliit_user,
+  file { $atlas_parent_directory:
+    ensure => directory,
+    owner  => $nunaliit_user,
   }
 
   # Atlas directory
-  file { $atlas_directory: 
-    require  => Exec["nunaliit-create-${title}"]
+  file { $atlas_directory:
+    require => Exec["nunaliit-create-${title}"]
   }
 
   # Atlas User
@@ -39,7 +39,7 @@ define nunaliit::atlas::create (
 
   # nunaliit config
   exec { "nunaliit-config-${title}":
-    command  => "/usr/bin/yes '' | ${nunaliit_command} --atlas-dir ${atlas_directory} config",
+    command => "/usr/bin/yes '' | ${nunaliit_command} --atlas-dir ${atlas_directory} config",
     user    => $nunaliit_user,
     creates => "${atlas_directory}/config/sensitive.properties",
     require => Exec["nunaliit-create-${title}"]
@@ -47,17 +47,17 @@ define nunaliit::atlas::create (
 
   # set runtime user
   file_line { "nunaliit-runtime-user-${title}":
-    path => "${atlas_directory}/extra/nunaliit.sh",
-    match => '#?NUNALIIT_USER=.*',
-    line => "NUNALIIT_USER=${nunaliit_user}",
+    path    => "${atlas_directory}/extra/nunaliit.sh",
+    match   => '#?NUNALIIT_USER=.*',
+    line    => "NUNALIIT_USER=${nunaliit_user}",
     require => Exec["nunaliit-config-${title}"]
   }
 
   # set couchdb password
   file_line { "couchdb-password-${atlas_directory}":
-    path => "${atlas_directory}/config/sensitive.properties",
-    match => '^couchdb\.admin\.password=.*',
-    line => "couchdb.admin.password=${couchdb_password}",
+    path    => "${atlas_directory}/config/sensitive.properties",
+    match   => '^couchdb\.admin\.password=.*',
+    line    => "couchdb.admin.password=${couchdb_password}",
     require => Exec["nunaliit-config-${title}"]
   }
 
