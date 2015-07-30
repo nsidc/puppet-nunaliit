@@ -2,18 +2,10 @@
 # Create and/or manage a nunaliit atlas
 
 define nunaliit::atlas (
-  $atlas_parent_directory = 
-     hiera('nunaliit::atlas_parent_directory', 
-     $nunaliit::params::atlas_parent_directory),
-  $atlas_source_directory = 
-     hiera('nunaliit::atlas_source_directory', 
-     $nunaliit::params::atlas_source_directory),
-  $nunaliit_user = 
-     hiera('nunaliit::nunaliit_user', 
-     $nunaliit::params::nunaliit_user),
-  $nunaliit_version = 
-     hiera('nunaliit::nunaliit_default_version', 
-     $nunaliit::params::nunaliit_default_version),
+  $atlas_parent_directory = hiera('nunaliit::atlas_parent_directory',   $nunaliit::params::atlas_parent_directory),
+  $atlas_source_directory = hiera('nunaliit::atlas_source_directory',   $nunaliit::params::atlas_source_directory),
+  $nunaliit_user          = hiera('nunaliit::nunaliit_user',            $nunaliit::params::nunaliit_user),
+  $nunaliit_version       = hiera('nunaliit::nunaliit_default_version', $nunaliit::params::nunaliit_default_version),
   $port = $nunaliit::params::nunaliit_default_port,
   $create = false,
   $htdocs = true,
@@ -30,8 +22,8 @@ define nunaliit::atlas (
 
   # Setup the atlas init script
   file { "/etc/init.d/${title}":
-    ensure => 'link',
-    target => "${atlas_directory}/extra/nunaliit.sh",
+    ensure  => 'link',
+    target  => "${atlas_directory}/extra/nunaliit.sh",
     require => File[$atlas_directory]
   }
 
@@ -47,17 +39,17 @@ define nunaliit::atlas (
   if $create == true {
 
     # Create the atlas (and atlas directory)
-    nunaliit::atlas::create {"$title":
-      atlas_directory => $atlas_directory,
-      nunaliit_user => $nunaliit_user,
+    nunaliit::atlas::create { $title:
+      atlas_directory  => $atlas_directory,
+      nunaliit_user    => $nunaliit_user,
       nunaliit_version => $nunaliit_version,
     }
 
     # Setup the Nunaliit service
     service { $title:
-      ensure => 'running',
-      enable => true,
-      status => "/etc/init.d/${title} check",
+      ensure  => 'running',
+      enable  => true,
+      status  => "/etc/init.d/${title} check",
       require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/${title}"], Nunaliit::Atlas::Create[$title] ],
     }
 
@@ -69,10 +61,10 @@ define nunaliit::atlas (
 
     # Setup the Nunaliit service
     service { $title:
-      ensure => 'running',
-      enable => true,
-      status => "/etc/init.d/${title} check",
-      require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/${title}"] ]
+      ensure  => 'running',
+      enable  => true,
+      status  => "/etc/init.d/${title} check",
+      require => [ Exec["wait-for-couchdb-${title}"], Service[couchdb], File["/etc/init.d/${title}"] ]
     }
   }
 
@@ -89,7 +81,7 @@ define nunaliit::atlas (
   if $docs {
     file{ "${atlas_directory}/docs":
       ensure  => directory,
-      owner   => $nunaliiit_user,
+      owner   => $nunaliit_user,
       recurse => true,
       purge   => true,
       force   => true,
@@ -104,7 +96,7 @@ define nunaliit::atlas (
   if $htdocs {
     file{ "${atlas_directory}/htdocs":
       ensure  => directory,
-      owner   => $nunaliiit_user,
+      owner   => $nunaliit_user,
       recurse => true,
       purge   => true,
       force   => true,
@@ -119,7 +111,7 @@ define nunaliit::atlas (
   if $config {
     file{ "${atlas_directory}/config":
       ensure  => directory,
-      owner   => $nunaliiit_user,
+      owner   => $nunaliit_user,
       recurse => true,
       source  => "${atlas_source_directory}/${title}/config",
       require => File[$atlas_directory],
@@ -129,10 +121,10 @@ define nunaliit::atlas (
 
   # Change the atlas port, then restart the service
   unless $port == undef {
-    file_line { "atlas-port-$title":
-      path => "${atlas_directory}/config/install.properties",
-      line => "servlet.url.port=${port}",
-      match => 'servlet\.url\.port=.*',
+    file_line { "atlas-port-${title}":
+      path    => "${atlas_directory}/config/install.properties",
+      line    => "servlet.url.port=${port}",
+      match   => 'servlet\.url\.port=.*',
       require => File[$atlas_directory],
       notify  => Service[$title],
     }
