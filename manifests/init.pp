@@ -17,18 +17,18 @@ class nunaliit (
   }
 
   # Install nunaliit dependencies
-  package{ couchdb: }
-  package{ imagemagick: }
-  package{ openjdk-7-jre-headless: }
-  package{ libav-tools: }
-  package{ ubuntu-restricted-extras: }
-  package{ libavcodec-extra-54: }
-  package{ libavformat-extra-54: }
+  package{ 'couchdb': }
+  package{ 'imagemagick': }
+  package{ 'openjdk-7-jre-headless': }
+  package{ 'libav-tools': }
+  package{ 'ubuntu-restricted-extras': }
+  package{ 'libavcodec-extra-54': }
+  package{ 'libavformat-extra-54': }
 
   # Ensure the CouchDB server is running and set to start on boot
   service { 'couchdb':
     ensure  => 'running',
-    enable  => 'true',
+    enable  => true,
     require => [ Package['couchdb'], File_line['couchdb_bind'], File_line['couchdb_admin'], File[$couchdb_data_directory] ]
   }
 
@@ -80,9 +80,9 @@ class nunaliit (
     path   => '/tmp/nunaliit-magic',
     source => 'puppet:///modules/nunaliit/magic',
   }
-  exec { "/bin/cat /tmp/nunaliit-magic >> /etc/magic":
+  exec { '/bin/cat /tmp/nunaliit-magic >> /etc/magic':
     require => File['nunaliit-magic'],
-    unless  => "/bin/grep nunaliit /etc/magic"
+    unless  => '/bin/grep nunaliit /etc/magic'
   }
 
   # We use puppi for the nunaliit installs from tgz

@@ -2,18 +2,10 @@
 # Create and/or manage a nunaliit atlas
 
 define nunaliit::atlas (
-  $atlas_parent_directory =
-     hiera('nunaliit::atlas_parent_directory',
-     $nunaliit::params::atlas_parent_directory),
-  $atlas_source_directory =
-     hiera('nunaliit::atlas_source_directory',
-     $nunaliit::params::atlas_source_directory),
-  $nunaliit_user =
-     hiera('nunaliit::nunaliit_user',
-     $nunaliit::params::nunaliit_user),
-  $nunaliit_version =
-     hiera('nunaliit::nunaliit_default_version',
-     $nunaliit::params::nunaliit_default_version),
+  $atlas_parent_directory = hiera('nunaliit::atlas_parent_directory',   $nunaliit::params::atlas_parent_directory), 
+  $atlas_source_directory = hiera('nunaliit::atlas_source_directory',   $nunaliit::params::atlas_source_directory),
+  $nunaliit_user          = hiera('nunaliit::nunaliit_user',            $nunaliit::params::nunaliit_user),
+  $nunaliit_version       = hiera('nunaliit::nunaliit_default_version', $nunaliit::params::nunaliit_default_version),
   $port = $nunaliit::params::nunaliit_default_port,
   $create = false,
   $htdocs = true,
@@ -89,7 +81,7 @@ define nunaliit::atlas (
   if $docs {
     file{ "${atlas_directory}/docs":
       ensure  => directory,
-      owner   => $nunaliiit_user,
+      owner   => $nunaliit_user,
       recurse => true,
       purge   => true,
       force   => true,
@@ -104,7 +96,7 @@ define nunaliit::atlas (
   if $htdocs {
     file{ "${atlas_directory}/htdocs":
       ensure  => directory,
-      owner   => $nunaliiit_user,
+      owner   => $nunaliit_user,
       recurse => true,
       purge   => true,
       force   => true,
@@ -119,7 +111,7 @@ define nunaliit::atlas (
   if $config {
     file{ "${atlas_directory}/config":
       ensure  => directory,
-      owner   => $nunaliiit_user,
+      owner   => $nunaliit_user,
       recurse => true,
       source  => "${atlas_source_directory}/${title}/config",
       require => File[$atlas_directory],
