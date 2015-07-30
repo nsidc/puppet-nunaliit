@@ -1,9 +1,11 @@
-# Puppet modules
-classes:
-  - nunaliit
-
 # Nunaliit CouchDB password
 # nunaliit::couchdb_password: Silalirijiit
+
+# Test putting atlases in a different location
+nunaliit::atlas_parent_directory: "/tmp/apps-nunaliit-atlases-%{environment}"
+
+# Test putting couchdbs in a different location
+nunaliit::couchdb_data_directory: "/tmp/apps-nunaliit-couchdbs-%{environment}-%{hiera('project')}"
 
 # Nunaliit versions to install
 nunaliit::installs:

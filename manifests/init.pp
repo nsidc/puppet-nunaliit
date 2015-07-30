@@ -17,37 +17,37 @@ class nunaliit (
   }
 
   # Install nunaliit dependencies
-  package{ "couchdb": }
-  package{ "imagemagick": }
-  package{ "openjdk-7-jre-headless": }
-  package{ "libav-tools": }
-  package{ "ubuntu-restricted-extras": }
-  package{ "libavcodec-extra-54": }
-  package{ "libavformat-extra-54": }
+  package{ 'couchdb': }
+  package{ 'imagemagick': }
+  package{ 'openjdk-7-jre-headless': }
+  package{ 'libav-tools': }
+  package{ 'ubuntu-restricted-extras': }
+  package{ 'libavcodec-extra-54': }
+  package{ 'libavformat-extra-54': }
 
   # Ensure the CouchDB server is running and set to start on boot
   service { 'couchdb':
-    ensure => 'running',
-    enable => 'true',
+    ensure  => 'running',
+    enable  => true,
     require => [ Package['couchdb'], File_line['couchdb_bind'], File_line['couchdb_admin'], File[$couchdb_data_directory] ]
   }
 
   # Setup the CouchDB server to listen to external requests
   file_line { 'couchdb_bind':
-    path => '/etc/couchdb/local.ini',
-    line => 'bind_address = 0.0.0.0',
-    match => ';?bind_address = .*',
+    path    => '/etc/couchdb/local.ini',
+    line    => 'bind_address = 0.0.0.0',
+    match   => ';?bind_address = .*',
     require => Package['couchdb'],
-    notify => Service['couchdb']
+    notify  => Service['couchdb']
   }
 
   # Setup the CouchDB server admin account
   file_line { 'couchdb_admin':
-    path  => '/etc/couchdb/local.ini',
-    line  => "admin = ${couchdb_password}",
-    match  => ';?admin = [a-zA-Z]+',
+    path    => '/etc/couchdb/local.ini',
+    line    => "admin = ${couchdb_password}",
+    match   => ';?admin = [a-zA-Z]+',
     require => Package['couchdb'],
-    notify => Service['couchdb']
+    notify  => Service['couchdb']
   }
 
   # Setup the CouchDB server log file
@@ -61,17 +61,17 @@ class nunaliit (
 
   # Setup the CouchDB database directory
   file { $couchdb_data_directory:
-     ensure => 'directory',
-     require => Package['couchdb'],
-     notify => Service['couchdb'],
-     owner => 'couchdb',
+    ensure  => 'directory',
+    require => Package['couchdb'],
+    notify  => Service['couchdb'],
+    owner   => 'couchdb',
   }
   file { '/var/lib/couchdb':
-     ensure => 'link',
-     target => $couchdb_data_directory,
-     force => true,
-     require => File[$couchdb_data_directory],
-     before  => Service['couchdb'],
+    ensure  => 'link',
+    target  => $couchdb_data_directory,
+    force   => true,
+    require => File[$couchdb_data_directory],
+    before  => Service['couchdb'],
   }
 
   # Configure mime types in /etc/magic
@@ -80,9 +80,9 @@ class nunaliit (
     path   => '/tmp/nunaliit-magic',
     source => 'puppet:///modules/nunaliit/magic',
   }
-  exec { "/bin/cat /tmp/nunaliit-magic >> /etc/magic":
+  exec { '/bin/cat /tmp/nunaliit-magic >> /etc/magic':
     require => File['nunaliit-magic'],
-    unless  => "/bin/grep nunaliit /etc/magic"
+    unless  => '/bin/grep nunaliit /etc/magic'
   }
 
   # We use puppi for the nunaliit installs from tgz
@@ -104,11 +104,11 @@ class nunaliit (
   file { '/etc/nginx/sites-available/default':
     ensure  => absent,
     require => Package['nginx'],
-    notify => Service['nginx']
+    notify  => Service['nginx']
   }
   service { 'nginx':
-    ensure => running,
-    enable => true,
+    ensure  => running,
+    enable  => true,
     require => Package[nginx]
   }
 
