@@ -39,3 +39,4 @@ The version of nunaliit required by this atlas
 ### `atlas_parent_directory`
 The parent directory for the atlas directory. The atlas directory itself is always named after the atlas.
 
+
