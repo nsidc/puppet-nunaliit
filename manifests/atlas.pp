@@ -35,6 +35,15 @@ define nunaliit::atlas (
     subscribe   => Service['couchdb'],
   }
 
+  # TEMPORARY (2015-08-04)
+  # I renamed the nunaliit service from "${title}" to "nunaliit-${title}"
+  # This exec statement disables the legacy service when the new one is enabled.
+  exec{ "disable-legacy-nunaliit-service-${title}":
+    command     => "update-rc.d -f ${title} remove",
+    path        => '/usr/sbin',
+    refreshonly => true,
+  }
+
   # If we were asked to create the atlas, do that before starting the service
   if $create == true {
 
@@ -50,7 +59,13 @@ define nunaliit::atlas (
       ensure  => 'running',
       enable  => true,
       status  => "/etc/init.d/nunaliit-${title} check",
-      require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/nunaliit-${title}"], Nunaliit::Atlas::Create[$title] ],
+      require => [
+        Exec["wait-for-couchdb-${title}"],
+        Service['couchdb'],
+        File["/etc/init.d/nunaliit-${title}"],
+        Nunaliit::Atlas::Create[$title]
+      ],
+      notify => Exec["disable-legacy-nunaliit-service-${title}"],
     }
 
   # Otherwise, just start the service
@@ -64,7 +79,12 @@ define nunaliit::atlas (
       ensure  => 'running',
       enable  => true,
       status  => "/etc/init.d/nunaliit-${title} check",
-      require => [ Exec["wait-for-couchdb-${title}"], Service['couchdb'], File["/etc/init.d/nunaliit-${title}"] ]
+      require => [
+        Exec["wait-for-couchdb-${title}"],
+        Service['couchdb'],
+        File["/etc/init.d/nunaliit-${title}"]
+      ],
+      notify => Exec["disable-legacy-nunaliit-service-${title}"],
     }
   }
 
