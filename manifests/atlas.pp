@@ -126,6 +126,19 @@ define nunaliit::atlas (
     }
   }
 
+  # Sync the the site folder, but leave any other existing files
+  # then run nunaliit update
+  if $config {
+    file{ "${atlas_directory}/site":
+      ensure  => directory,
+      owner   => $nunaliit_user,
+      recurse => true,
+      source  => "${atlas_source_directory}/${title}/site",
+      require => Service["nunaliit-${title}"],
+      notify  => Exec["nunaliit-update-${title}"]
+    }
+  }
+
   # Sync the the config folder, but leave any other existing files
   # then restart the nunaliit service
   if $config {
@@ -138,6 +151,7 @@ define nunaliit::atlas (
       notify  => Service["nunaliit-${title}"],
     }
   }
+
 
   # Change the atlas port, then restart the service
   unless $port == undef {
