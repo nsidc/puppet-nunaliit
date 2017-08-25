@@ -153,7 +153,6 @@ define nunaliit::atlas (
     }
   }
 
-
   # Change the atlas port, then restart the service
   unless $port == undef {
     file_line { "atlas-port-${title}":
