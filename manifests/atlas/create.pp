@@ -45,6 +45,12 @@ define nunaliit::atlas::create (
     require => Exec["nunaliit-create-${title}"]
   }
 
+  # make sure nunaliit.sh has correct permissions
+  file { "${atlas_directory}/extra/nunaliit.sh" :
+    mode => '0755',
+    require => Exec["nunaliit-create-${title}"]
+  }
+
   # set runtime user
   file_line { "nunaliit-runtime-user-${title}":
     path    => "${atlas_directory}/extra/nunaliit.sh",
