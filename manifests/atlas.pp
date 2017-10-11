@@ -11,6 +11,7 @@ define nunaliit::atlas (
   $htdocs = true,
   $docs = true,
   $config = true,
+  $site = true
 ) {
   include ::nunaliit::params
 
@@ -126,6 +127,20 @@ define nunaliit::atlas (
     }
   }
 
+  # Sync the site folder leaving any other existing files
+  # then run nunaliit update
+  if $site {
+    file{ "${atlas_directory}/site":
+      ensure  => directory,
+      owner   => $nunaliit_user,
+      recurse => true,
+      force   => true,
+      source  => "${atlas_source_directory}/${title}/site",
+      require => Service["nunaliit-${title}"],
+      notify  => Exec["nunaliit-update-${title}"]
+    }
+  }
+
   # Sync the the config folder, but leave any other existing files
   # then restart the nunaliit service
   if $config {
@@ -151,4 +166,3 @@ define nunaliit::atlas (
   }
 
 }
-
