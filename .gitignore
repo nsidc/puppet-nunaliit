@@ -3,3 +3,7 @@
 .nsidc-project.yaml
 vendor/
 Gemfile*.lock
+puppet/.librarian
+puppet/.tmp
+puppet/Puppetfile.lock
+spec/fixtures/modules/
