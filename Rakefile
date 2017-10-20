@@ -23,5 +23,5 @@ end
 desc "Run parser validation and puppet-lint"
 task :lint do
   sh 'puppet parser validate ./manifests/'
-  sh 'puppet-lint --no-autoloader_layout-check ./manifests'
+  sh 'puppet-lint ./manifests'
 end
