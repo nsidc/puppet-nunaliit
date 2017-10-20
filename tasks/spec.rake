@@ -15,6 +15,7 @@ namespace :spec do
   desc "Run unit tests"
   task :unit do
     Dir.chdir('puppet')
+    sh 'mv Puppetfile.spec Puppetfile'
     sh 'librarian-puppet clean'
     sh 'librarian-puppet install --path=../spec/fixtures/modules'
     Dir.chdir('..')
@@ -22,6 +23,7 @@ namespace :spec do
     sh 'git checkout spec/' # The puppet-install does bad things to spec/...
     sh 'rake rspec'
     sh 'rm -f spec/fixtures/modules/nunaliit' # vagrant uses rsync --copy-links...
+    sh 'git checkout -- puppet/Puppetfile puppet/Puppetfile.spec'
   end
 
   desc "Run integration tests"
