@@ -1,3 +1,5 @@
 .vagrant
 .vagrant-*
 .nsidc-project.yaml
+vendor/
+Gemfile*.lock
