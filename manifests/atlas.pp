@@ -66,7 +66,7 @@ define nunaliit::atlas (
         File["/etc/init.d/nunaliit-${title}"],
         Nunaliit::Atlas::Create[$title]
       ],
-      notify => Exec["disable-legacy-nunaliit-service-${title}"],
+      notify  => Exec["disable-legacy-nunaliit-service-${title}"],
     }
 
   # Otherwise, just start the service
@@ -85,7 +85,7 @@ define nunaliit::atlas (
         Service['couchdb'],
         File["/etc/init.d/nunaliit-${title}"]
       ],
-      notify => Exec["disable-legacy-nunaliit-service-${title}"],
+      notify  => Exec["disable-legacy-nunaliit-service-${title}"],
     }
   }
 
