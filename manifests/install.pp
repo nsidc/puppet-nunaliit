@@ -8,7 +8,8 @@ define nunaliit::install (
 
 
   # Install nunaliit tgz from source url
-
+  # TODO: This feature is unfinished, waiting on additional information from Peter.
+  # TODO: When finsihing this feature pull the path from a config location for easy updating.
   if $nunaliit_version =~ /.*SNAPSHOT.*/ {
     $nunaliit_tar_path = "/apps/nunaliit/distros/nunaliit2-couch-sdk-${nunaliit_version}.tar.gz"
     file { "/opt/nunaliit2-couch-sdk-${nunaliit_version}":
