@@ -6,6 +6,7 @@ class nunaliit (
   $couchdb_data_directory = $nunaliit::params::couchdb_data_directory,
   $atlas_parent_directory = $nunaliit::params::atlas_parent_directory,
   $atlas_source_directory = $nunaliit::params::atlas_source_directory,
+  $basic_auth = $nunaliit::params::basic_auth
 ) inherits nunaliit::params {
 
   # $couchdb_log_file = "${couchdb_data_directory}/couch.log"
@@ -92,14 +93,27 @@ class nunaliit (
 
   # install and configure nginx
   package { 'nginx': }
-  file { '/etc/nginx/conf.d/nunaliit.conf':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    source  => 'puppet:///modules/nunaliit/nginx.conf',
-    require => Package['nginx'],
-    notify  => Service['nginx']
+
+  if $basic_auth == true {
+    file { '/etc/nginx/conf.d/nunaliit.conf':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      source  => 'puppet:///modules/nunaliit/nginx-basic-auth.conf',
+      require => Package['nginx'],
+      notify  => Service['nginx']
+    }
+  } else {
+    file { '/etc/nginx/conf.d/nunaliit.conf':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      source  => 'puppet:///modules/nunaliit/nginx.conf',
+      require => Package['nginx'],
+      notify  => Service['nginx']
+    }
   }
   file { '/etc/nginx/sites-available/default':
     ensure  => absent,

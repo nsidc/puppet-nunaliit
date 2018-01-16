@@ -66,7 +66,7 @@ define nunaliit::atlas (
         File["/etc/init.d/nunaliit-${title}"],
         Nunaliit::Atlas::Create[$title]
       ],
-      notify  => Exec["disable-legacy-nunaliit-service-${title}"],
+      notify => Exec["disable-legacy-nunaliit-service-${title}"],
     }
 
   # Otherwise, just start the service
@@ -85,7 +85,7 @@ define nunaliit::atlas (
         Service['couchdb'],
         File["/etc/init.d/nunaliit-${title}"]
       ],
-      notify  => Exec["disable-legacy-nunaliit-service-${title}"],
+      notify => Exec["disable-legacy-nunaliit-service-${title}"],
     }
   }
 
@@ -127,7 +127,7 @@ define nunaliit::atlas (
     }
   }
 
-  # Sync the site folder leaving any other existing files
+  # Sync the the site folder, but leave any other existing files
   # then run nunaliit update
   if $site {
     file{ "${atlas_directory}/site":
@@ -166,3 +166,4 @@ define nunaliit::atlas (
   }
 
 }
+
