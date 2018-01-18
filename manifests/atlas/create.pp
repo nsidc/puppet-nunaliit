@@ -8,12 +8,16 @@ define nunaliit::atlas::create (
   $atlas_directory = "${atlas_parent_directory}/${title}",
   $nunaliit_user = $nunaliit::params::nunaliit_user,
   $nunaliit_version = nunaliit::params::nunaliit_default_version,
-  $couchdb_password = hiera('nunaliit::couchdb_password', $nunaliit::params::couchdb_password)
+  $couchdb_password = hiera('nunaliit::couchdb_password', $nunaliit::params::couchdb_password),
+  $pre229 = $nunaliit::params::pre229,
+  $nunaliit_pkg_prefix = hiera('nunaliit::pkg_prefix', $nunaliit::params::pkg_prefix),
+  $nunaliit_sh = hiera('nunaliit::nunaliit_script', "nunaliit-${title}.sh"),
 ) {
   include ::nunaliit::params
 
   # Nunaliit command
-  $nunaliit_command = "/opt/nunaliit2-couch-sdk-${nunaliit_version}/bin/nunaliit"
+  $nunaliit_command = "/opt/${nunaliit_pkg_prefix}${nunaliit_version}/bin/nunaliit"
+
 
   # Atlas parent directory
   file { $atlas_parent_directory:
@@ -46,14 +50,14 @@ define nunaliit::atlas::create (
   }
 
   # make sure nunaliit.sh has correct permissions
-  file { "${atlas_directory}/extra/nunaliit.sh" :
+  file { "${atlas_directory}/extra/${nunaliit_sh}" :
     mode => '0755',
     require => Exec["nunaliit-create-${title}"]
   }
 
   # set runtime user
   file_line { "nunaliit-runtime-user-${title}":
-    path    => "${atlas_directory}/extra/nunaliit.sh",
+    path    => "${atlas_directory}/extra/${nunaliit_sh}",
     match   => '#?NUNALIIT_USER=.*',
     line    => "NUNALIIT_USER=${nunaliit_user}",
     require => Exec["nunaliit-config-${title}"]
