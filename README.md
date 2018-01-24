@@ -23,6 +23,14 @@ nunaliit::atlases:
 This sets up basic auth using NGINX. Requires a password file in /files/htpasswd 
 of the project depending on puppet-nunaliit. Set to true to enable, any other value or not set to disable
 
+### nunaliit::nunaliit_script: 
+Override the nunaliit_script filename. If installing older versions of nunaliit (pre-2.2.9) set this to 
+`nunaliit.sh`. For 2.2.9 and newer this value should not be set, it will be correctly generated.
+
+### nunaliit::pkg_prefix: 
+Override the expected tarball package prefix. If installing older versions of nunaliit (pre-2.2.9) set this
+to `nunaliit2-couch-sdk-`. For 2.2.9 and newer this value should not be set, it will be correctly generated.
+
 ---
 ### nunaliit::install
 This defined type downloads and unpacks the specified version of nunaliit into /opt
