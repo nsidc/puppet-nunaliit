@@ -4,6 +4,7 @@
 :hierarchy:
   - "puppet/%{environment}"
   - puppet/nunaliit-common
+  - puppet/nunaliit-sensitive
   - puppet/hiera
   - vagrant-nsidc
 :merge_behavior: deeper
