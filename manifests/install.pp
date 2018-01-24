@@ -10,7 +10,6 @@ define nunaliit::install (
 ) {
   include ::nunaliit::params
 
-
   # Install nunaliit tgz from source url
   if $nunaliit_version =~ /.*SNAPSHOT.*/ {
     $nunaliit_tar_url = "${nunaliit_snapshot_tarball_base_url}/nunaliit_${nunaliit_version}.tar.gz"
@@ -30,4 +29,3 @@ define nunaliit::install (
     }
   }
 
-}
