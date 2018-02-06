@@ -19,6 +19,18 @@ nunaliit::atlases:
 
 ## Defined Types & Classes
 
+### nunaliit::basic_auth
+This sets up basic auth using NGINX. Requires a password file in /files/htpasswd 
+of the project depending on puppet-nunaliit. Set to true to enable, any other value or not set to disable
+
+### nunaliit::nunaliit_script: 
+Override the nunaliit_script filename. If installing older versions of nunaliit (pre-2.2.9) set this to 
+`nunaliit.sh`. For 2.2.9 and newer this value should not be set, it will be correctly generated.
+
+### nunaliit::pkg_prefix: 
+Override the expected tarball package prefix. If installing older versions of nunaliit (pre-2.2.9) set this
+to `nunaliit2-couch-sdk-`. For 2.2.9 and newer this value should not be set, it will be correctly generated.
+
 ---
 ### nunaliit::install
 This defined type downloads and unpacks the specified version of nunaliit into /opt
@@ -39,4 +51,12 @@ The version of nunaliit required by this atlas
 ### `atlas_parent_directory`
 The parent directory for the atlas directory. The atlas directory itself is always named after the atlas.
 
+---
 
+### nunaliit::couchdb_password
+The password for couchdb. Use puppet/nunaliit-sensitive.yaml to prevent checking passwords into source control.
+ 
+### nunaliit::snapshot_app_user
+### nunaliit::snapshot_app_password
+The bitbucket app-password username and password to access SNAPSHOT builds of nunaliit. Only required if using
+snapshot builds.

@@ -6,6 +6,8 @@ define nunaliit::atlas (
   $atlas_source_directory = hiera('nunaliit::atlas_source_directory',   $nunaliit::params::atlas_source_directory),
   $nunaliit_user          = hiera('nunaliit::nunaliit_user',            $nunaliit::params::nunaliit_user),
   $nunaliit_version       = hiera('nunaliit::nunaliit_default_version', $nunaliit::params::nunaliit_default_version),
+  $nunaliit_pkg_prefix    = hiera('nunaliit::pkg_prefix',      $nunaliit::params::pkg_prefix),
+  $nunaliit_sh = hiera('nunaliit::nunaliit_script', "nunaliit-${title}.sh"),
   $port = $nunaliit::params::nunaliit_default_port,
   $create = false,
   $htdocs = true,
@@ -16,7 +18,7 @@ define nunaliit::atlas (
   include ::nunaliit::params
 
   # Nunaliit command
-  $nunaliit_command = "/opt/nunaliit2-couch-sdk-${nunaliit_version}/bin/nunaliit"
+  $nunaliit_command = "/opt/${nunaliit_pkg_prefix}${nunaliit_version}/bin/nunaliit"
 
   # atlas directory must be named consistently
   $atlas_directory = "${atlas_parent_directory}/${title}"
@@ -24,7 +26,7 @@ define nunaliit::atlas (
   # Setup the atlas init script
   file { "/etc/init.d/nunaliit-${title}":
     ensure  => 'link',
-    target  => "${atlas_directory}/extra/nunaliit.sh",
+    target  => "${atlas_directory}/extra/${nunaliit_sh}",
     require => File[$atlas_directory]
   }
 
