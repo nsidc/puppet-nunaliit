@@ -1,15 +1,17 @@
 forge "https://forgeapi.puppetlabs.com"
 
+# Module for installing packages from apt
+mod 'puppetlabs-apt', "< 2.0.0"
+
+# Module for webserver (nginx) install
+mod "nsidc/puppet-nginx",
+  :git => 'https://github.com/nsidc/puppet-nginx'
+
 # Dependencies for this module
-mod 'puppetlabs/stdlib'
+mod 'puppetlabs-stdlib'
 mod 'example42/puppi'
 
 # Module for creating NSIDC Jenkins servers
 mod 'nsidc/nsidc_jenkins',
   :git => 'git@bitbucket.org:/nsidc/puppet-nsidc-jenkins.git',
   :ref => 'latest'
-
-# Module for installing python and pip.
-# You may want to use this if using python's bumpversion
-# for doing your version bumping.
-mod 'stankevich/python'

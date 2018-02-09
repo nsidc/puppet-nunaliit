@@ -3,16 +3,9 @@ gitrepo: git@github.com:nsidc/puppet-nunaliit.git
 gitbranch: master
 
 vsphere:
-  template: trusty64-nsidc
+  template:
+    default: xenial64-docker-puppet4
+    ci: xenial64-docker-puppet4-jenkins1
 virtualbox:
-  box: trusty64-nsidc
-  box_url: http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/vagrant/boxes/trusty64-nsidc.box
-puppet:
-  enabled: true
-  execution_dir: /vagrant
-  apply:
-    options: --debug --verbose --modulepath=/vagrant/puppet/modules:/vagrant-nsidc-puppet --hiera_config=./puppet/hiera.yaml
-    manifest: ./puppet/site.pp
-  librarian:
-    puppetfile: ./puppet/Puppetfile
-
+  box: xenial64-docker-puppet4
+  box_url: http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/vagrant/boxes/xenial64-docker-puppet4.box

@@ -17,6 +17,7 @@ class nunaliit::params
   $nunaliit_default_port = '8080'
   $atlas_parent_directory = '/tmp'
   $atlas_source_directory = '/vagrant/atlases'
+  $basic_auth = false
   $couchdb_password = 'Silalirijiit'
   $couchdb_data_directory = '/tmp/couchdb'
   $pkg_prefix = 'nunaliit_'

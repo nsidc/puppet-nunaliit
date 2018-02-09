@@ -28,4 +28,4 @@ define nunaliit::install (
       extracted_dir   => "${nunaliit_pkg_prefix}${nunaliit_version}"
     }
   }
-
+}

@@ -1,0 +1,15 @@
+lookup_options:
+  '^.*':
+    merge: deep
+
+classes:
+  - apt
+
+nsidc_miniconda::install:
+  /opt/miniconda:
+    version: '4.3.27'
+    python_version: "3"
+    config:
+      channels:
+        anaconda_nsidc_dev: false
+        conda_forge: true
