@@ -11,7 +11,7 @@ define nunaliit::atlas::create (
   $couchdb_password = hiera('nunaliit::couchdb_password', $nunaliit::params::couchdb_password),
   $nunaliit_pkg_prefix = hiera('nunaliit::pkg_prefix', $nunaliit::params::pkg_prefix),
   # $nunaliit_sh = hiera('nunaliit::nunaliit_script', "nunaliit-${title}.sh"),
-  $nunaliit_sh = hiera('nunaliit::nunaliit_script', "nunaliit.sh"),
+  $nunaliit_sh = hiera('nunaliit::nunaliit_script', 'nunaliit.sh'),
 ) {
   include ::nunaliit::params
 
@@ -51,7 +51,7 @@ define nunaliit::atlas::create (
 
   # make sure nunaliit.sh has correct permissions
   file { "${atlas_directory}/extra/${nunaliit_sh}" :
-    mode => '0755',
+    mode    => '0755',
     require => Exec["nunaliit-create-${title}"]
   }
 

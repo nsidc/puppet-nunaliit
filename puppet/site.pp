@@ -1,11 +1,6 @@
 # Load modules and classes
 lookup('classes', {merge => unique}).include
 
-# Load puppet options from vagrant-nsidc.yaml
-#$puppet = hiera_hash('puppet')
-#$puppet_options = $puppet['apply']['options']
-#$puppet_manifest = $puppet['apply']['manifest']
-
 if $environment == 'ci' {
   # ci machine needs some python dependencies to install bumpversion,
   # which can be used as a common way to bump versions for any project.
