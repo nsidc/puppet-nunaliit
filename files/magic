@@ -1,9 +1,13 @@
-# nunaliit magic
-4       string          ftyp            ISO Media
+# 4       string          ftyp            ISO Media
 >8      string          MSNV            \b, MPEG v4 system, version 2
 !:mime  video/mp4
+>8      string          isom            \b, MP4 Base Media v1
+!:mime  video/mp4
+>8      string/b        qt              video/quicktime
+!:mime  video/quicktime
+>8      string          3gp4             \b, Apple iTunes ALAC/AAC-LC (.M4A) Audio
+!:mime  audio/x-m4a
 
 #MP3 with ID3 tag
 0       string      ID3     audio/mpeg
 !:mime  audio/mpeg
-

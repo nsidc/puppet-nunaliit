@@ -9,7 +9,7 @@ nunaliit::couchdb_data_directory: "/tmp/apps-nunaliit-couchdbs-%{environment}-%{
 
 # Nunaliit versions to install
 nunaliit::installs:
-  2.2.3: {}
+  2.2.7: {}
   # 2.2.2: {}
 
 # Atlases to manage 
