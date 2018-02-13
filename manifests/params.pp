@@ -20,7 +20,7 @@ class nunaliit::params
   $basic_auth = false
   $couchdb_password = 'Silalirijiit'
   $couchdb_data_directory = '/tmp/couchdb'
-  $pkg_prefix = 'nunaliit2-couch-sdk-'
+  $pkg_prefix = 'nunaliit_'
   $snapshot_tarball_base_url = 'https://api.bitbucket.org/2.0/repositories/nsidc/eloka-nunaliit-snapshots/downloads'
 }
 

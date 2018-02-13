@@ -1,5 +1,4 @@
-# Nunaliit CouchDB password
-# nunaliit::couchdb_password: Silalirijiit
+nunaliit::basic_auth: true
 
 # Test putting atlases in a different location
 nunaliit::atlas_parent_directory: "/tmp/apps-nunaliit-atlases-%{environment}"
@@ -9,12 +8,20 @@ nunaliit::couchdb_data_directory: "/tmp/apps-nunaliit-couchdbs-%{environment}-%{
 
 # Nunaliit versions to install
 nunaliit::installs:
-  2.2.7: {}
+  # 2.2.7: {}
   # 2.2.2: {}
+  2.2.9-SNAPSHOT_2018-01-16_a76375e: {}
 
 # Atlases to manage 
 # (must use one of the nunaliit versions listed above)
 nunaliit::atlases:
   example:
     create: true
+    nunaliit_version: 2.2.9-SNAPSHOT_2018-01-16_a76375e
 
+# Atlases to manage 
+# (must have same nunaliit version listed above)
+# nunaliit::atlases:
+#  snowy:
+#    create: true
+#    nunaliit_version: 2.2.9-SNAPSHOT_2018-01-16_a76375e

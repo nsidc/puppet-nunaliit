@@ -10,8 +10,8 @@ define nunaliit::atlas::create (
   $nunaliit_version = nunaliit::params::nunaliit_default_version,
   $couchdb_password = hiera('nunaliit::couchdb_password', $nunaliit::params::couchdb_password),
   $nunaliit_pkg_prefix = hiera('nunaliit::pkg_prefix', $nunaliit::params::pkg_prefix),
-  # $nunaliit_sh = hiera('nunaliit::nunaliit_script', "nunaliit-${title}.sh"),
-  $nunaliit_sh = hiera('nunaliit::nunaliit_script', 'nunaliit.sh'),
+  $nunaliit_sh = hiera('nunaliit::nunaliit_script', "nunaliit-${title}.sh"),
+  # $nunaliit_sh = hiera('nunaliit::nunaliit_script', 'nunaliit.sh'),
 ) {
   include ::nunaliit::params
 

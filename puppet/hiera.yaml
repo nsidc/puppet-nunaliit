@@ -11,4 +11,5 @@ hierarchy:
       - "/vagrant/puppet/%{environment}.yaml"
       - "/vagrant/puppet/common.yaml"
       - "/vagrant/puppet/nunaliit-common.yaml"
+      - "/vagrant/puppet/nunaliit-sensitive.yaml"
       - "/vagrant/vagrant-nsidc.yaml"
