@@ -17,20 +17,44 @@ class nunaliit (
     provider => 'gem',
   }
 
+  # execute 'add-ppa-repo' and 'apt-get update'
+  # Needed in 16.04 to install couchdb v1.6.1 instead of v1.6.0
+  # (see https://issues.apache.org/jira/browse/COUCHDB-2298)
+  exec { 'add-ppa-repo':
+    command => '/usr/bin/sudo /usr/bin/add-apt-repository ppa:couchdb/stable -y',
+    notify  => Exec['apt-update']
+  }
+
+  exec { 'apt-update':
+    command => '/usr/bin/sudo /usr/bin/apt update',
+    require => Exec['add-ppa-repo'],
+    notify  => Package['couchdb']
+  }
+
   # Install nunaliit dependencies
-  package{ 'couchdb': }
+  package{ 'couchdb':
+    require => Exec['apt-update'],
+  }
   package{ 'imagemagick': }
-  package{ 'openjdk-7-jre-headless': }
+  package{ 'openjdk-8-jre-headless': }
+  package{ 'ffmpeg': }
   package{ 'libav-tools': }
   package{ 'ubuntu-restricted-extras': }
-  package{ 'libavcodec-extra-54': }
-  package{ 'libavformat-extra-54': }
+  package{ 'libavcodec-extra': }
 
   # Ensure the CouchDB server is running and set to start on boot
   service { 'couchdb':
     ensure  => 'running',
     enable  => true,
-    require => [ Package['couchdb'], File_line['couchdb_bind'], File_line['couchdb_admin'], File[$couchdb_data_directory] ]
+    restart => true,
+    require => [ Package['couchdb'], File_line['couchdb_bind'], File_line['couchdb_admin'], File[$couchdb_data_directory] ],
+    notify  => Exec['couchdb_restart']
+  }
+
+  # Restart couchdb from command line
+  exec { 'couchdb_restart':
+    command => '/usr/bin/sudo /usr/sbin/service couchdb restart',
+    require => Service['couchdb']
   }
 
   # Setup the CouchDB server to listen to external requests
@@ -66,6 +90,8 @@ class nunaliit (
     require => Package['couchdb'],
     notify  => Service['couchdb'],
     owner   => 'couchdb',
+    group   => 'couchdb',
+    mode    => '0766'
   }
   file { '/var/lib/couchdb':
     ensure  => 'link',
@@ -127,11 +153,11 @@ class nunaliit (
   }
 
   # Find any nunaliit installations defined in hiera data and add them to the manifest
-  $nunaliit_installs = hiera_hash('nunaliit::installs', {})
+  $nunaliit_installs = lookup('nunaliit::installs', {'default_value' => {}, 'merge' => 'deep'})
   create_resources('nunaliit::install', $nunaliit_installs)
 
   # Find any nunaliit atlases defined in hiera data and add them to the manifest
-  $nunaliit_atlases = hiera_hash('nunaliit::atlases', {})
+  $nunaliit_atlases = lookup('nunaliit::atlases', {'default_value' => {}, 'merge' => 'deep'})
   create_resources('nunaliit::atlas', $nunaliit_atlases)
 
 }

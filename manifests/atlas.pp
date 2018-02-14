@@ -8,12 +8,14 @@ define nunaliit::atlas (
   $nunaliit_version       = hiera('nunaliit::nunaliit_default_version', $nunaliit::params::nunaliit_default_version),
   $nunaliit_pkg_prefix    = hiera('nunaliit::pkg_prefix',      $nunaliit::params::pkg_prefix),
   $nunaliit_sh = hiera('nunaliit::nunaliit_script', "nunaliit-${title}.sh"),
+  # $nunaliit_sh = hiera('nunaliit::nunaliit_script', 'nunaliit.sh'),
   $port = $nunaliit::params::nunaliit_default_port,
   $create = false,
   $htdocs = true,
   $docs = true,
   $config = true,
-  $site = true
+  # $site = true
+  $site = false
 ) {
   include ::nunaliit::params
 
@@ -68,7 +70,7 @@ define nunaliit::atlas (
         File["/etc/init.d/nunaliit-${title}"],
         Nunaliit::Atlas::Create[$title]
       ],
-      notify => Exec["disable-legacy-nunaliit-service-${title}"],
+      notify  => Exec["disable-legacy-nunaliit-service-${title}"],
     }
 
   # Otherwise, just start the service
@@ -87,7 +89,7 @@ define nunaliit::atlas (
         Service['couchdb'],
         File["/etc/init.d/nunaliit-${title}"]
       ],
-      notify => Exec["disable-legacy-nunaliit-service-${title}"],
+      notify  => Exec["disable-legacy-nunaliit-service-${title}"],
     }
   }
 

@@ -1,0 +1,6 @@
+# Nunaliit CouchDB password
+nunaliit::couchdb_password: 2Silly4ELOKA
+
+# API key to access Nunaliit SNAPSHOT builds
+nunaliit::snapshot_app_user: billingb
+nunaliit::snapshot_app_password: 8pAa8cBt9EHupD2AxMfs
