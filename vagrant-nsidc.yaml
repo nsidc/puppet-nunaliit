@@ -3,10 +3,10 @@ gitrepo: git@github.com:nsidc/puppet-nunaliit.git
 gitbranch: master
 
 vsphere:
-  template: trusty64-nsidc
+  template: xenial64-docker-puppet3
 virtualbox:
-  box: trusty64-nsidc
-  box_url: http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/vagrant/boxes/trusty64-nsidc.box
+  box: xenial64-docker-puppet3
+  box_url: http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/vagrant/boxes/xenial64-docker-puppet3.box
 puppet:
   enabled: true
   execution_dir: /vagrant
