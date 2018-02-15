@@ -15,11 +15,6 @@ Vagrant.configure(2) do |config|
   # Symlink /vagrant into the puppet modules folder so it can be loaded like a module
   config.vm.provision "shell", inline: "mkdir -p /vagrant-nsidc-puppet; ln -sf /vagrant /vagrant-nsidc-puppet/nunaliit"
 
-  config.vm.provision :shell do |s|
-    s.name = 'apt-get update'
-    s.inline = 'apt-get update'
-  end
-
   # Apply puppet
   config.vm.provision :nsidc_puppet
 
