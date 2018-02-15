@@ -26,7 +26,7 @@ define nunaliit::atlas (
   $atlas_directory = "${atlas_parent_directory}/${title}"
 
   # Setup the atlas init script
-  file { "/etc/systemd/system/nunaliit-${title}.service":
+  file { "/etc/init.d/nunaliit-${title}.service":
     ensure  => 'link',
     target  => "${atlas_directory}/extra/${nunaliit_sh}",
     require => File[$atlas_directory]
@@ -54,11 +54,11 @@ define nunaliit::atlas (
     service { "nunaliit-${title}":
       ensure  => 'running',
       enable  => true,
-      status  => "/etc/systemd/system/nunaliit-${title}.service check",
+      # status  => "/etc/init.d/nunaliit-${title}.service check",
       require => [
         Exec["wait-for-couchdb-${title}"],
         Service['couchdb'],
-        File["/etc/systemd/system/nunaliit-${title}.service"],
+        File["/etc/init.d/nunaliit-${title}.service"],
         Nunaliit::Atlas::Create[$title]
       ]
     }
@@ -73,11 +73,11 @@ define nunaliit::atlas (
     service { "nunaliit-${title}":
       ensure  => 'running',
       enable  => true,
-      status  => "/etc/systemd/system/nunaliit-${title}.service check",
+      # status  => "/etc/systemd/system/nunaliit-${title}.service check",
       require => [
         Exec["wait-for-couchdb-${title}"],
         Service['couchdb'],
-        File["/etc/systemd/system/nunaliit-${title}.service"]
+        File["/etc/init.d/nunaliit-${title}.service"]
       ]
     }
   }
