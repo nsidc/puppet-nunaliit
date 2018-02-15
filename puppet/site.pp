@@ -6,6 +6,10 @@ $puppet_manifest = $puppet['apply']['manifest']
 # Load modules and classes
 hiera_include('classes')
 
+Service {
+  provider => 'systemd',
+}
+
 if $environment == 'ci' {
   # ci machine needs some python dependencies to install bumpversion,
   # which can be used as a common way to bump versions for any project.
