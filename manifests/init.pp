@@ -22,18 +22,12 @@ class nunaliit (
   # (see https://issues.apache.org/jira/browse/COUCHDB-2298)
   exec { 'add-ppa-repo':
     command => '/usr/bin/sudo /usr/bin/add-apt-repository ppa:couchdb/stable -y',
-    notify  => Exec['apt-update']
-  }
-
-  exec { 'apt-update':
-    command => '/usr/bin/sudo /usr/bin/apt update',
-    require => Exec['add-ppa-repo'],
     notify  => Package['couchdb']
   }
 
   # Install nunaliit dependencies
   package{ 'couchdb':
-    require => Exec['apt-update'],
+    require => Exec['add-ppa-repo'],
   }
   package{ 'imagemagick': }
   package{ 'openjdk-8-jre-headless': }
