@@ -58,7 +58,7 @@ define nunaliit::atlas (
       require => [
         Exec["wait-for-couchdb-${title}"],
         Service['couchdb'],
-        File["/systemd/system/nunaliit-${title}.service"],
+        File["/etc/systemd/system/nunaliit-${title}.service"],
         Nunaliit::Atlas::Create[$title]
       ]
     }
