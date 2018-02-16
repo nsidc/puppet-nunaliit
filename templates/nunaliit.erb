@@ -5,13 +5,13 @@ After=couchdb.service
 
 [Service]
 Type=simple
-User=vagrant
-# ExecStart=/opt/nunaliit_2.2.9-SNAPSHOT_2018-01-16_a76375e/bin/nunaliit --atlas-dir "/tmp/example" run
+User=<%= nunaliit_user %>
+
 # The command to start nunaliit
-ExecStart=<%= atlas_directory %>/extra/<%= nunaliit_sh %>  --atlas-dir "/tmp/example" run
-ExecStop=<%= atlas_directory %>/extra/<%= nunaliit_sh %>  --atlas-dir "/tmp/example" stop
-ExecReload=<%= atlas_directory %>/extra/<%= nunaliit_sh %>  --atlas-dir "/tmp/example" restart
-Restart=always
+ExecStart=<%= nunaliit_command %>  --atlas-dir <%= atlas_directory %> run
+ExecStop=<%= nunaliit_command %>  --atlas-dir <%= atlas_directory %> stop
+ExecReload=<%= nunaliit_command %>  --atlas-dir <%= atlas_directory %> restart
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
