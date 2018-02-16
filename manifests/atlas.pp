@@ -84,6 +84,7 @@ define nunaliit::atlas (
         Service['couchdb'],
         File['nunaliit_systemd_config'],
         Nunaliit::Atlas::Create[$title]
+      ]
     }
 
   # Otherwise, just start the service
@@ -100,6 +101,7 @@ define nunaliit::atlas (
         Exec["wait-for-couchdb-${title}"],
         Service['couchdb'],
         File['nunaliit_systemd_config'],
+      ]
     }
   }
 
