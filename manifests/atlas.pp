@@ -27,7 +27,7 @@ define nunaliit::atlas (
 
   # Setup the atlas init script
   file { 'nunaliit_systemd_config':
-    content => template('/vagrant/puppet/modules/nunaliit/nunaliit.erb'),
+    content => template('/vagrant/puppet/modules/nunaliit/templates/nunaliit.erb'),
     path    => "/etc/systemd/system/nunaliit-${title}.service",
     owner   => 'root',
     group   => 'root',
