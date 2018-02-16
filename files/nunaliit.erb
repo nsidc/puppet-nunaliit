@@ -1,0 +1,11 @@
+[Unit]
+Description=The Nunaliit command line application
+
+[Service]
+Type=forking
+# The command to start nunaliit
+ExecStart=<%= atlas_directory %>/extra/<%= nunaliit_sh %>
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
