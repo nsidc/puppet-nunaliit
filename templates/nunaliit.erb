@@ -1,10 +1,16 @@
 [Unit]
 Description=The Nunaliit command line application
+Requires=couchdb.service
+After=couchdb.service
 
 [Service]
-Type=forking
+Type=simple
+User=vagrant
+# ExecStart=/opt/nunaliit_2.2.9-SNAPSHOT_2018-01-16_a76375e/bin/nunaliit --atlas-dir "/tmp/example" run
 # The command to start nunaliit
-ExecStart=<%= atlas_directory %>/extra/<%= nunaliit_sh %>
+ExecStart=<%= atlas_directory %>/extra/<%= nunaliit_sh %>  --atlas-dir "/tmp/example" run
+ExecStop=<%= atlas_directory %>/extra/<%= nunaliit_sh %>  --atlas-dir "/tmp/example" stop
+ExecReload=<%= atlas_directory %>/extra/<%= nunaliit_sh %>  --atlas-dir "/tmp/example" restart
 Restart=always
 
 [Install]
