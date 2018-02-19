@@ -18,7 +18,6 @@ class nunaliit::params
   $atlas_parent_directory = '/tmp'
   $atlas_source_directory = '/vagrant/atlases'
   $basic_auth = false
-  $couchdb_password = 'Silalirijiit'
   $couchdb_data_directory = '/tmp/couchdb'
   $pkg_prefix = 'nunaliit_'
   $snapshot_tarball_base_url = 'https://api.bitbucket.org/2.0/repositories/nsidc/eloka-nunaliit-snapshots/downloads'
