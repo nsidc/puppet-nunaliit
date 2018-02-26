@@ -47,6 +47,7 @@ class nunaliit (
     ensure  => 'running',
     enable  => true,
     restart => true,
+    start   => /usr/bin/couchdb  -o /dev/stdout -e /dev/stderr
     require => [ Package['couchdb'], File_line['couchdb_bind'], File_line['couchdb_admin'], File[$couchdb_data_directory] ],
     notify  => Exec['couchdb_restart']
   }
