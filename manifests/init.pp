@@ -132,12 +132,14 @@ class nunaliit (
     }
 
     #nginx htpasswd file for basic auth
-    file { ‘/etc/nginx/htpasswd’:
+    file { '/etc/nginx/htpasswd':
      ensure  => present,
-     owner   => ‘root’,
-     group   => ‘root’,
-     mode    => ‘0644’,
-     source  => ‘/vagrant/files/htpasswd’,
+     owner   => 'root',
+     group   => 'root',
+     mode    => '0644',
+     source  => '/vagrant/files/htpasswd',
+     require => Package['nginx'],
+     notify  => Service['nginx']
     }
   } else {
     file { '/etc/nginx/conf.d/nunaliit.conf':
