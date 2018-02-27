@@ -13,11 +13,11 @@ class nunaliit::params
 
   # Nunaliit class defaults
   $nunaliit_user = 'vagrant'
-  $nunaliit_default_version = '2.2.3'
+  $nunaliit_default_version = '2.2.7'
   $nunaliit_default_port = '8080'
   $atlas_parent_directory = '/tmp'
   $atlas_source_directory = '/vagrant/atlases'
-  $couchdb_password = 'Silalirijiit'
+  $basic_auth = false
   $couchdb_data_directory = '/tmp/couchdb'
   $pkg_prefix = 'nunaliit_'
   $snapshot_tarball_base_url = 'https://api.bitbucket.org/2.0/repositories/nsidc/eloka-nunaliit-snapshots/downloads'

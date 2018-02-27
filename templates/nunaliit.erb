@@ -1,0 +1,16 @@
+[Unit]
+Description=The Nunaliit command line application
+Requires=couchdb.service
+After=couchdb.service
+
+[Service]
+Type=simple
+User=<%= @nunaliit_user %>
+
+# The command to start nunaliit
+ExecStart=<%= @nunaliit_command %>  --atlas-dir <%= @atlas_directory %> run
+ExecReload=<%= @nunaliit_command %>  --atlas-dir <%= @atlas_directory %> restart
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -24,9 +24,12 @@ define nunaliit::atlas (
   $atlas_directory = "${atlas_parent_directory}/${title}"
 
   # Setup the atlas init script
-  file { "/etc/init.d/nunaliit-${title}":
-    ensure  => 'link',
-    target  => "${atlas_directory}/extra/${nunaliit_sh}",
+  file { 'nunaliit_systemd_config':
+    content => template('/vagrant/puppet/modules/nunaliit/templates/nunaliit.erb'),
+    path    => "/etc/systemd/system/nunaliit-${title}.service",
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
     require => File[$atlas_directory]
   }
 
@@ -36,15 +39,6 @@ define nunaliit::atlas (
     path        => '/usr/local/bin:/usr/bin:/bin',
     refreshonly => true,
     subscribe   => Service['couchdb'],
-  }
-
-  # TEMPORARY (2015-08-04)
-  # I renamed the nunaliit service from "${title}" to "nunaliit-${title}"
-  # This exec statement disables the legacy service when the new one is enabled.
-  exec{ "disable-legacy-nunaliit-service-${title}":
-    command     => "update-rc.d -f ${title} remove",
-    path        => '/usr/sbin',
-    refreshonly => true,
   }
 
   # If we were asked to create the atlas, do that before starting the service
@@ -57,18 +51,15 @@ define nunaliit::atlas (
       nunaliit_version => $nunaliit_version,
     }
 
-    # Setup the Nunaliit service
     service { "nunaliit-${title}":
-      ensure  => 'running',
+      ensure  => running,
       enable  => true,
-      status  => "/etc/init.d/nunaliit-${title} check",
       require => [
         Exec["wait-for-couchdb-${title}"],
         Service['couchdb'],
-        File["/etc/init.d/nunaliit-${title}"],
+        File['nunaliit_systemd_config'],
         Nunaliit::Atlas::Create[$title]
-      ],
-      notify => Exec["disable-legacy-nunaliit-service-${title}"],
+      ]
     }
 
   # Otherwise, just start the service
@@ -79,15 +70,13 @@ define nunaliit::atlas (
 
     # Setup the Nunaliit service
     service { "nunaliit-${title}":
-      ensure  => 'running',
+      ensure  => running,
       enable  => true,
-      status  => "/etc/init.d/nunaliit-${title} check",
       require => [
         Exec["wait-for-couchdb-${title}"],
         Service['couchdb'],
-        File["/etc/init.d/nunaliit-${title}"]
-      ],
-      notify => Exec["disable-legacy-nunaliit-service-${title}"],
+        File['nunaliit_systemd_config'],
+      ]
     }
   }
 
